@@ -2,6 +2,8 @@
 
 関数のインスタンスを更新せず、関数の挙動のみ更新するサンプル
 
+https://next-callback-event.vercel.app/
+
 ```tsx
 "use client";
 import {
