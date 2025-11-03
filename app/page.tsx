@@ -1,23 +1,6 @@
 "use client";
-import {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  useImperativeHandle,
-} from "react";
-
-// 関数のインスタンスを変えずに、関数の挙動を更新する
-export function useCallbackEvent<T extends (...args: unknown[]) => unknown>(
-  callback: T
-) {
-  const property = useRef<{ callback: T }>(null);
-  useImperativeHandle(property, () => ({ callback }));
-  return useCallback((...args: Parameters<T>) => {
-    if (!property.current) throw "callback is null";
-    return property.current.callback(...args);
-  }, []);
-}
+import { useEffect, useState } from "react";
+import { useCallbackEvent } from "./libs/use-callback-event";
 
 const Page = () => {
   const [valueA, setValueA] = useState(10);
@@ -29,7 +12,7 @@ const Page = () => {
     setAnswer(valueA + valueB);
   });
 
-  // handleAnswerのインスタンスは変更されないので、useEffectのコールバックkはvalueA,valueBを更新しても呼ばれない
+  // handleAnswerのインスタンスは変更されないので、useEffectのコールバックはvalueA,valueBを更新しても呼ばれない
   useEffect(() => {
     const t = setInterval(() => {
       handleAnswer();
